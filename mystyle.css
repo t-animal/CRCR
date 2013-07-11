@@ -1,7 +1,77 @@
-rect.month{
-color:#000000;fill:none;stroke:#000000;stroke-width:1.00794876;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate
+text {
+	font-family:Droid Sans;
 }
 
-rect.day{
-color:#000000;fill:none;stroke:#000000;stroke-width:0.93298459;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate
+.title{
+	font-size:38.5202446px;
+	text-align:center;
+	text-anchor:middle;
+	font-family:Droid Sans;
+	font-size:154px
+}
+
+.copyleft{
+	text-anchor:end;
+	font-size:30px;
+}
+
+.monthname{
+	font-size:70px;
+	text-align:center;
+	text-anchor:middle;
+	font-family:Maya;
+}
+
+.month, .day{
+	fill:none;
+	stroke:#000000;
+	stroke-width:1;
+	enable-background:accumulate
+}
+
+.invisible {
+	display:none !important;
+}
+
+.daynumber{
+	text-anchor:end;
+	fill-opacity:0.3;
+	font-size:70px;
+}
+
+.weekday{
+	font-size:30px;
+}
+
+/*stammtisch*/
+.trunktable{
+	stroke-width:5;
+}
+
+.holiday{
+	fill:#A0FFA0;
+}
+
+
+.weekend{
+	fill:#F0F0F0;
+}
+
+.holiday.weekend{
+	fill:#B0D0B0;
+}
+
+.birthday{
+	fill:#FFFF00;
+}
+
+.birthday.weekend{
+	fill:#EAEA00;
+}
+
+.birthday.holiday{
+	fill:#BFFF00;
+}
+.birthday.holiday.weekend{
+	fill:#AFDF00;
 }
