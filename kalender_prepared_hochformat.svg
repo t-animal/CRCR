@@ -14,7 +14,7 @@
     </rdf:RDF>
   </metadata>
     <text id="title" class="title" x="1097.6533" y="223.33067">FSI-Kalender 2013</text>
-    <text class="copyleft" id="copyleft" x="2130.396" y="5473.1943">Lizenziert unter Creative-Commons BY-NC-SA 3; created with CalendRCreatR http://github.com/t_animal/CRCR</text>
+    <text class="copyleft" id="copyleft" x="2130.396" y="5473.1943">Lizenziert unter Creative-Commons BY-NC-SA 3; created with CalendRCreatR http://github.com/t-animal/CRCR</text>
     
     <rect class="month january" height="2543.0864" id="1" width="321.43689" x="71.370483" y="284.0441"/>
     <rect class="month february" height="2543.0864" id="2" width="321.43689" x="418.614111" y="284.0441"/>
