@@ -49,29 +49,41 @@ text {
 }
 
 .holiday{
-	fill:#A0FFA0;
+	fill:#D0FFD0;
 }
-
 
 .weekend{
 	fill:#F0F0F0;
 }
 
 .holiday.weekend{
-	fill:#B0D0B0;
+	fill:#D0F0D0;
 }
 
 .birthday{
-	fill:#FFFF00;
+	fill:#FEFEC0;
 }
 
 .birthday.weekend{
-	fill:#EAEA00;
+	fill:#F0F000;
 }
 
 .birthday.holiday{
-	fill:#BFFF00;
+	fill:#DFFFA0;
 }
+
 .birthday.holiday.weekend{
 	fill:#AFDF00;
+}
+
+.termine{
+	fill:#FFD0D0;
+}
+
+.termine.weekend{
+	fill:#FFB0B0;
+}
+
+.termine.birthday{
+	fill:#FFE090;
 }

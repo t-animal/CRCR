@@ -1,7 +1,11 @@
 <?xml version="1.0" ?>
 <?xml-stylesheet type="text/css" href="mystyle.css" ?>
 <svg height="2979.9211" id="svg2" version="1.1" width="4212.9922" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg">
-  <defs id="defs4"/>
+  <defs id="defs4">
+  	<style type="text/css" id="css">
+  	//kommentar wird ersetzt durch css
+  	</style>
+  </defs>
   <metadata id="metadata7">
     <rdf:RDF>
       <cc:Work rdf:about="">
