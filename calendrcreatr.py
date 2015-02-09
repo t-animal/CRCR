@@ -55,9 +55,9 @@ for (d,m),titel,klasse in sondertage:
 sondertage = sondertage2
 
 #einzelne freien tage eintragen
-freietage = [sum(monatslaenge[:m-1])+d for (d,m) in freietage]
+freietage = [sum(monatslaenge[:m-1])+d for (d,m) in freietage] if not freietage[0]==(0,0) else []
 #pro ferienzeitraum, jeden freien tag (range(anfang, ende+1)) eintragn
-freietage += [x for ((d1,m1),(d2,m2)) in ferienzeitraeume for x in range(sum(monatslaenge[:m1-1])+d1,sum(monatslaenge[:m2-1])+d2+1)]
+freietage += [x for ((d1,m1),(d2,m2)) in ferienzeitraeume for x in range(sum(monatslaenge[:m1-1])+d1,sum(monatslaenge[:m2-1])+d2+1)] if not ferienzeitraeume[0] == ((0,0),(0,0)) else []
 
 #vorlage oeffnen
 try:
@@ -65,7 +65,7 @@ try:
 except IOError:
 	print("Konnte Vorlage nicht öffnen. Dateiname?")
 	sys.exit(1)
-	
+
 #css eintragen
 try:
 	image.getElementsByTagName("style")[0].firstChild.replaceWholeText(open("templates/mystyle.css").read())
@@ -81,50 +81,50 @@ textElement[0].firstChild.replaceWholeText("FSI-Kalender {}".format(jahr))
 for rect in image.getElementsByTagName("rect"):
 	if "day" in rect.getAttribute("class"):
 		id = rect.getAttribute("id")
-		
+
 		#tag und monat ausblenden
 		try:
 			month = int(id[0:id.find("-")])
 			day = int(id[id.find("-")+1:])
-			
+
 			if not 0 < month < 13 or not 0 < day < 32:
 				raise ValueError()
 		except ValueError:
 			print("Warning: Invalid id {}!".format(id))
 			continue
-		
+
 		#tage, die es im monat nicht gibt, ausblenden
 		if day > monatslaenge[month-1]:
 			rect.addClass("invisible")
 			rect.nextSibling.nextSibling.addClass("invisible")
 			continue
-		
+
 		tagImJahr = sum(monatslaenge[:month-1])+day
 		wochentag = (tagImJahr + wochentagoffset)%7
 		rect.setAttribute("weekday", wochentage[wochentag-1])
-		
+
 		#wochennummer einfuegen
 		offset = 0
 		if wochentag == 1:
 			offset = 15 #15=1/2 fontsize
 			rect.parentNode.insertBefore(xml.dom.minidom.parseString("""<text id="{}-{}-woy" class="weekday" style="font-size:30px" x="{}" y="{}">{}</text>"""
 					.format(month,
-						day, 
+						day,
 						float(rect.getAttribute("x"))+2,
 						float(rect.getAttribute("y"))+float(rect.getAttribute("height"))/2+10-offset,
 						int(tagImJahr/7)+1)).firstChild, rect.nextSibling)
-		
+
 		#stammtischwochen
 		if wochentag == 2 and int(tagImJahr/7+1) in stammtischwochen:
 			rect.addClass("trunktable")
-		
+
 		#ferien und feiertage faerben
 		if tagImJahr in freietage:
 			rect.addClass("holiday")
-		
+
 		if wochentag == 0 or wochentag == 6:
 			rect.addClass("weekend")
-		
+
 		#besondere tage (geburtstage, ccc) kennzeichnen
 		if tagImJahr in sondertage:
 			#pro eintrag an diesem tag klasse setzen, bezeichnung einfuegen
@@ -132,23 +132,23 @@ for rect in image.getElementsByTagName("rect"):
 				rect.addClass(sondertag[1])
 				rect.parentNode.insertBefore(xml.dom.minidom.parseString("""<text id="{}-{}-special" class="specialdaytext" style="font-size:{}px;" x="{}" y="{}">{}</text>"""
 						.format(month,
-							day, 
+							day,
 							#textgroesse haengt von anzahl der eintraege ab
 							float(rect.getAttribute("height"))/(0.7+0.7*len(sondertage[tagImJahr])),
 							float(rect.getAttribute("x"))+45+(10 if len(sondertage[tagImJahr])>1 else 0),
 							#y mit magischer formel bestimmen, die auch die anzahl der eintraege mit einbezieht
 							float(rect.getAttribute("y"))+float(rect.getAttribute("height"))/len(sondertage[tagImJahr])*(i+1)-0.3*(float(rect.getAttribute("height"))/(0.7+0.7*len(sondertage[tagImJahr]))),
 							sondertag[0])).firstChild, rect.nextSibling)
-			
-		
+
+
 		#wochentag einfuegen
 		rect.parentNode.insertBefore(xml.dom.minidom.parseString("""<text id="{}-{}-weekday" style="font-size:30px;" x="{}" y="{}">{}</text>"""
 					.format(month,
-						day, 
+						day,
 						float(rect.getAttribute("x"))+2,
 						float(rect.getAttribute("y"))+float(rect.getAttribute("height"))/2+10+offset,
 						wochentage[wochentag-1][0:2])).firstChild, rect.nextSibling)
-			
+
 
 f = open('outputCalendar.svg','w')
 
