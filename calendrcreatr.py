@@ -42,6 +42,7 @@ except Exception as e:
 monatslaenge = [31,28,31,30,31,30,31,31,30,31,30,31]
 wochentage = ("montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag", "sonntag")
 wochentagoffset = datetime.date(jahr, 1, 1).weekday()
+kalenderwochenoffset = 1 if wochentagoffset >= 3 else 0 #erste woche mit donnerstag ist die erste woche
 
 #im schaltjahr februar +1 Tag
 if ((jahr%4 == 0 and not jahr%100 == 0) or jahr%400 == 0):
@@ -112,7 +113,7 @@ for rect in image.getElementsByTagName("rect"):
 						day,
 						float(rect.getAttribute("x"))+2,
 						float(rect.getAttribute("y"))+float(rect.getAttribute("height"))/2+10-offset,
-						int(tagImJahr/7)+1)).firstChild, rect.nextSibling)
+						int(tagImJahr/7)+1+kalenderwochenoffset)).firstChild, rect.nextSibling)
 
 		#stammtischwochen
 		if wochentag == 2 and int(tagImJahr/7+1) in stammtischwochen:
