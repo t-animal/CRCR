@@ -39,7 +39,7 @@ except Exception as e:
 
 
 #einige hilfsstrukturen initialisieren
-monatslaenge = (31,28,31,30,31,30,31,31,30,31,30,31)
+monatslaenge = [31,28,31,30,31,30,31,31,30,31,30,31]
 wochentage = ("montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag", "sonntag")
 wochentagoffset = datetime.date(jahr, 1, 1).weekday()
 
