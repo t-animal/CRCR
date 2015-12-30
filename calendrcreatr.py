@@ -1,8 +1,22 @@
 #!/usr/bin/env python3
+import argparse
 import xml.dom.minidom
 import datetime
 import itertools
 import sys
+
+
+
+parser = argparse.ArgumentParser(description="Create a beautiful calendar in a heartbeat from a config file and a template.",  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-y", "--year", dest="year", type=int, help="overwrite the year in the config file")
+parser.add_argument("-c", "--config", dest="config", default="calendar.conf", help="path to the config file to read")
+parser.add_argument("-t", "--template", dest="template", default="templates/calendar.svg", help="path to the template file to read")
+parser.add_argument("-s", "--stylesheet", dest="stylesheet", default="templates/style.css", help="path to the stylesheet file to import into the svg")
+parser.add_argument("-o", "--output", dest="output", default="outputCalendar.svg", help="path to the write the output to")
+
+args = parser.parse_args()
+
+
 
 xml.dom.minidom.Element.addClass = lambda x,y: x.setAttribute("class", x.getAttribute("class")+" "+str(y))
 
@@ -12,17 +26,18 @@ stammtischwochen = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53]
 ferienzeiträume = []
 freietage = []
 sondertage = []
-filename = "templates/kalender_prepared.svg"
 
 
 #config lesen
 try:
-	conf = open("calendar.conf", "r")
+	conf = open(args.config, "r")
 	configIterator = itertools.filterfalse(lambda l:l[0]=="#" or l[0] == '\n' or len(l)==0, conf)
 	conf.readline =  lambda:next(configIterator)
 
 	#zeile fuer zeile einlesen, adaequat splitten und zu int konvertieren
 	jahr = int(conf.readline())
+	if not args.year == None:
+		jahr = args.year
 	stammtischwochen = list(map(int, conf.readline().split(",")))
 	ferienzeitraeume = [(tuple(map(int,von.split("."))),tuple(map(int,bis.split(".")))) for von, bis in [zeitraum.split("-") for zeitraum in conf.readline().split(",")]]
 	freietage = [tuple(map(int,b.split("."))) for b in conf.readline().split(",")]
@@ -62,14 +77,14 @@ freietage += [x for ((d1,m1),(d2,m2)) in ferienzeitraeume for x in range(sum(mon
 
 #vorlage oeffnen
 try:
-	image = xml.dom.minidom.parse(filename)
+	image = xml.dom.minidom.parse(args.template)
 except IOError:
 	print("Konnte Vorlage nicht öffnen. Dateiname?")
 	sys.exit(1)
 
 #css eintragen
 try:
-	image.getElementsByTagName("style")[0].firstChild.replaceWholeText(open("templates/mystyle.css").read())
+	image.getElementsByTagName("style")[0].firstChild.replaceWholeText(open(args.stylesheet).read())
 except IOError:
 	print("Konnte CSS nicht oeffnen. Huh?!")
 	sys.exit()
@@ -151,7 +166,7 @@ for rect in image.getElementsByTagName("rect"):
 						wochentage[wochentag-1][0:2])).firstChild, rect.nextSibling)
 
 
-f = open('outputCalendar.svg','w')
+f = open(args.output,'w')
 
 image.writexml(f)
 f.close()
