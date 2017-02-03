@@ -143,18 +143,25 @@ for rect in image.getElementsByTagName("rect"):
 
 		#besondere tage (geburtstage, ccc) kennzeichnen
 		if tagImJahr in sondertage:
+			specialDayRect = xml.dom.minidom.parseString("""<rect id="{}-{}-specialRect" class="specialdayrect" x="{}" y="{}" width="5" height="{}"></rect>"""
+												.format(month, day, float(rect.getAttribute("x"))-5, rect.getAttribute("y"), rect.getAttribute("height"))).firstChild
 			#pro eintrag an diesem tag klasse setzen, bezeichnung einfuegen
 			for i, sondertag in enumerate(sondertage[tagImJahr]):
-				rect.addClass(sondertag[1])
-				rect.parentNode.insertBefore(xml.dom.minidom.parseString("""<text id="{}-{}-special" class="specialdaytext" style="font-size:{}px;" x="{}" y="{}">{}</text>"""
-						.format(month,
-							day,
+				specialDayRect.setAttribute("class", specialDayRect.getAttribute("class") + " " + sondertag[1])
+				specialDayText = xml.dom.minidom.parseString("""<text id="{}-{}-special" class="specialdaytext {}" style="font-size:{}px;" x="{}" y="{}">{}</text>"""
+						.format(month, day, sondertag[1],
 							#textgroesse haengt von anzahl der eintraege ab
 							float(rect.getAttribute("height"))/(0.7+0.7*len(sondertage[tagImJahr])),
 							float(rect.getAttribute("x"))+45+(10 if len(sondertage[tagImJahr])>1 else 0),
 							#y mit magischer formel bestimmen, die auch die anzahl der eintraege mit einbezieht
 							float(rect.getAttribute("y"))+float(rect.getAttribute("height"))/len(sondertage[tagImJahr])*(i+1)-0.3*(float(rect.getAttribute("height"))/(0.7+0.7*len(sondertage[tagImJahr]))),
-							sondertag[0])).firstChild, rect.nextSibling)
+							sondertag[0])).firstChild
+
+				rect.addClass(sondertag[1])
+				rect.parentNode.insertBefore(specialDayText, rect.nextSibling)
+
+			if not len(sondertage[tagImJahr]) == 0:
+				rect.parentNode.insertBefore(specialDayRect, rect.nextSibling)
 
 
 		#wochentag einfuegen
